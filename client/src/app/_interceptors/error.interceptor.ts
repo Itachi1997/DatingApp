@@ -9,7 +9,6 @@ import { Observable, throwError } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs/operators';
-import { error } from '@angular/compiler/src/util';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -43,9 +42,11 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.router.navigateByUrl('/not-found');
               break;
             case 500:
-              const navigationExtras: NavigationExtras = { state: {error: error.error} };
+              const navigationExtras: NavigationExtras = {
+                state: { error: error.error },
+              };
               this.router.navigateByUrl('/server-error', navigationExtras);
-            break;
+              break;
             default:
               this.toastr.error('Something unexpected went wrong');
               break;
